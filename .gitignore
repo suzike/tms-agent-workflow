@@ -19,10 +19,11 @@ data/memory.json
 .spec-workflow/
 .playwright-mcp/
 
-# 调试截图/临时文件
+# 调试截图/临时文件(但保留 README 用的 docs 配图)
 *.png
 *.svg
 _*.svg
+!docs/img/*.png
 
 # 操作系统
 .DS_Store
