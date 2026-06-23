@@ -36,6 +36,8 @@ class InferenceResult:
     settings: dict[str, ZoneSetting] = field(default_factory=dict)
     traces: dict[str, DecisionTrace] = field(default_factory=dict)
     applied: dict[str, bool] = field(default_factory=dict)
+    # 可选:每座位推理链步骤(capture_chain=True 时填充,供 UI 与总览同源展示)
+    chains: dict[str, list] = field(default_factory=dict)
 
 
 @dataclass
@@ -173,14 +175,36 @@ class Engine:
         )
         return effective, applied
 
+    def _run_graph(self, init: dict, seat: str, capture: bool):
+        """跑单座位图。capture=True 时用流式收集推理链步骤(与最终态同源)。
+
+        返回 (merged_state, steps)。steps 仅在 capture 时非空。
+        """
+        if not capture:
+            return self.graph.invoke(init), []
+        merged: dict = {}
+        steps: list[ChainStep] = []
+        for chunk in self.graph.stream(init, stream_mode="updates"):
+            for node, update in chunk.items():
+                merged.update(update)
+                data = (update.get("comfort_breakdown") if node == "comfort"
+                        else update.get("feature_detail") if node == "featurize"
+                        else None)
+                steps.append(ChainStep(seat, node, _NODE_TITLE.get(node, node),
+                                       _summarize_step(node, update), data=data))
+        return merged, steps
+
     # ---- 推理 ----
-    def infer(self, scene: SceneInput, now: Optional[float] = None) -> InferenceResult:
+    def infer(self, scene: SceneInput, now: Optional[float] = None,
+              capture_chain: bool = False) -> InferenceResult:
         now = time.time() if now is None else now
         result = InferenceResult()
         for occ in scene.present_occupants():
             seat, key = occ.seat_id, (occ.user_id, occ.seat_id)
             locked = seat_locked(self.locked_until.get(seat), now)
-            state = self.graph.invoke(self._initial_state(scene, occ, now))
+            state, steps = self._run_graph(
+                self._initial_state(scene, occ, now), seat, capture_chain
+            )
             effective, applied = self._finalize(
                 seat, state["setting"], state["trace"], now
             )
@@ -194,6 +218,13 @@ class Engine:
             result.settings[seat] = effective
             result.traces[seat] = state["trace"]
             result.applied[seat] = applied
+            if capture_chain:
+                # 末步展示"实际生效"值,确保推理链与总览卡片完全一致
+                tail = (f"{effective.temp_set}℃ / {effective.fan_level}档 / "
+                        f"{effective.air_mode} · "
+                        f"{'已自动应用' if applied else '维持(防抖/冷静期)'}")
+                steps.append(ChainStep(seat, "final", _NODE_TITLE["final"], tail))
+                result.chains[seat] = steps
         return result
 
     # ---- 实时推理链(流式可视化)----

@@ -36,8 +36,10 @@ def _build_payload(state: AgentState) -> dict[str, Any]:
     """组装 LLM 输入:场景 + 人员特征/状态 + 舒适锚点 + 知识(专业基准,个性化由 blend 负责)。"""
     cabin = state["cabin"]
     occ = state["occupant"]
+    # 注意:刻意不放 seat_id —— 热舒适只取决于物理输入,与座位无关。
+    # 否则主/副驾物理输入相同也会因 payload 不同而被 LLM 当成不同请求(且温度>0 非确定),
+    # 导致同输入异输出;去掉后相同输入 → 相同 payload → 缓存命中 → 主副驾一致。
     return {
-        "seat_id": occ.seat_id,
         "season": cabin.season,
         "weather": cabin.weather,
         "humidity": cabin.humidity,

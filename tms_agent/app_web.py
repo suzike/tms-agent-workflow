@@ -654,8 +654,7 @@ def _defog_banner(scene: SceneInput, eng: Engine) -> None:
         )
 
 
-def _dashboard(scene: SceneInput, eng: Engine) -> None:
-    result = eng.infer(scene)
+def _dashboard(scene: SceneInput, eng: Engine, result) -> None:
     _defog_banner(scene, eng)
     left, right = st.columns([5, 6], gap="large")
     with left:
@@ -808,10 +807,10 @@ def _defog_chain(scene: SceneInput, eng: Engine) -> None:
     st.divider()
 
 
-def _chain_panel(scene: SceneInput, eng: Engine) -> None:
+def _chain_panel(scene: SceneInput, eng: Engine, result) -> None:
     st.markdown("#### ⚡ 实时推理链(多 Agent)")
-    st.caption("随场景实时更新。除雾 Agent(车厢级)与舒适 Agent(按座位)并行协作;"
-               "展开「③ 舒适计算」可见车内温度 / PMV / PPD 的完整计算过程。")
+    st.caption("与「座舱总览」同一次推理,数值完全一致。除雾 Agent(车厢级)与舒适 Agent"
+               "(按座位)并行协作;展开「③ 舒适计算」可见车内温度 / PMV / PPD 的完整计算过程。")
     _defog_chain(scene, eng)
     st.markdown("##### 🌡 舒适 Agent 推理链(按座位)")
     occs = scene.present_occupants()
@@ -820,7 +819,7 @@ def _chain_panel(scene: SceneInput, eng: Engine) -> None:
         with col:
             st.markdown(f"##### 🚗 {_SEAT_ZH[occ.seat_id]} · {occ.user_id} "
                         f"({_CAT_ZH[occ.category]}/{occ.gender}/{occ.age})")
-            for step in eng.stream_seat(scene, occ, apply=False):
+            for step in result.chains.get(occ.seat_id, []):
                 icon = _STEP_ICON.get(step.node, "•")
                 cls = "chain-line chain-final" if step.node == "final" else "chain-line"
                 st.markdown(
@@ -907,11 +906,13 @@ def main() -> None:
     scene = _build_scene()
     _header(scene)
 
+    # 一次推理同时驱动「总览」与「推理链」,保证两处数值完全一致
+    result = eng.infer(scene, capture_chain=True)
     tab1, tab2, tab3 = st.tabs(["座舱总览", "实时推理链", "学习记忆"])
     with tab1:
-        _dashboard(scene, eng)
+        _dashboard(scene, eng, result)
     with tab2:
-        _chain_panel(scene, eng)
+        _chain_panel(scene, eng, result)
     with tab3:
         _memory_panel(eng)
 
