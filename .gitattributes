@@ -1,0 +1,11 @@
+# Windows 批处理必须 CRLF,否则双击一闪而退
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+# 文本默认按内容自动处理
+*.py    text
+*.md    text
+*.json  text
+*.toml  text
+# 二进制图片不做换行转换
+*.png   binary
+*.svg   -text
