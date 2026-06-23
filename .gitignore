@@ -24,6 +24,7 @@ data/memory.json
 *.svg
 _*.svg
 !docs/img/*.png
+!docs/img/*.svg
 
 # 操作系统
 .DS_Store

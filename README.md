@@ -37,6 +37,10 @@
 
 ![多 Agent 推理链](docs/img/multi_agent_chain.png)
 
+**CLI 终端**:与 Web **同一套引擎、功能对齐**——`infer` 含除雾 Agent 决策与推荐表、`say` 语音指令、`chain` 多 Agent 推理链、`memory` 记忆链条。双击 `run_cli.bat` 一键进入。
+
+![CLI 终端界面](docs/img/cli_terminal.svg)
+
 ---
 
 ## ✨ 核心能力
