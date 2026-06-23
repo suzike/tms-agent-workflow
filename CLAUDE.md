@@ -115,6 +115,8 @@
 8. **Web 富 SVG 用 `st.components.v1.html`(iframe)渲染**,勿用 `st.markdown`——多行 SVG 会被
    Markdown 段落化截断(座椅/文字被丢弃),且滤镜/渐变/动画需 iframe 内联样式。诊断用 Playwright
    `iframe.contentDocument` 查 svg 子元素数。
+9. **Windows 脚本(`.bat`)必须 CRLF 换行**,否则双击一闪而退;已由 `.gitattributes`(`*.bat text eol=crlf`)
+   强制检出。新增/修改 `.bat` 后确认为 CRLF。
 
 ## 运行与验证
 

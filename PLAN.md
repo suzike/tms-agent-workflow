@@ -106,8 +106,10 @@ MockDecider 直接采用,口径统一。
 
 ## 更新记录
 
-- **GitHub 公开仓库**:https://github.com/suzike/tms-agent-workflow;根目录 `setup.bat`(双击装依赖)、
-  `run_web.bat`(双击启动);`.gitignore` 排除 `.env/.venv/记忆`,仅 `.env.example` 入库。
+- **GitHub 公开仓库**:https://github.com/suzike/tms-agent-workflow;双击脚本 `setup.bat`(装依赖)/
+  `run_web.bat`(启 Web)/ `run_cli.bat`(启 CLI 终端,`tms` 快捷命令);`.gitignore` 排除
+  `.env/.venv/记忆`,仅 `.env.example` 入库;**`.gitattributes` 强制 `.bat` 以 CRLF 检出**(修复
+  Windows 双击一闪而退)。CLI 与 Web **同引擎、功能对齐**(infer/chain/say/correct/teach/memory/reset)。
 - **总览↔推理链同源 + 主副驾一致(修复)**:`engine.infer(capture_chain=True)` 一次推理同时产出
   生效设定与推理链步骤,Web 两处数值完全一致;LLM payload 去掉 `seat_id`,相同物理输入 → 相同结果。
 - **瞬态控制接入 LLM**:`transient_setpoint_fan` 设定/风量随负荷回调,注入 payload 并由提示词强制遵循;

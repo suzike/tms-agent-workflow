@@ -223,7 +223,8 @@ tms_agent/
   app_web.py / app_cli.py   Streamlit 座舱 HMI / Typer CLI
 data/   mock_scenes.json 演示场景 · scenario_set.json 回归工况(memory.json 运行时生成)
 docs/img/   README 配图
-setup.bat / run_web.bat / run_cli.bat   双击:安装 / 启动 Web / 启动 CLI 终端
+setup.bat / run_web.bat / run_cli.bat   双击:安装依赖 / 启动 Web / 启动 CLI 终端
+.gitattributes            强制 .bat 以 CRLF 检出(避免 Windows 双击闪退)
 ```
 
 ---
