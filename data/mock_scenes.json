@@ -1,0 +1,61 @@
+[
+  {
+    "name": "夏季暴晒进车(主驾热/后排小孩)",
+    "scene": {
+      "cabin": {"ambient_temp": 36, "cabin_temp": 50, "weather": "sunny", "humidity": 55, "sun_driver_wm2": 1350, "sun_passenger_wm2": 1100, "soc": 75, "speed": 0, "season": "summer", "timestamp": 1700000000.0},
+      "occupants": [
+        {"seat_id": "driver", "user_id": "alice", "age": 38, "gender": "female", "height_cm": 165, "weight_kg": 58, "clothing": "light", "emotion": "worried", "activity": "calm"},
+        {"seat_id": "rear_left", "user_id": "kid", "age": 6, "gender": "male", "height_cm": 118, "weight_kg": 22, "clothing": "light", "emotion": "happy", "activity": "excited"}
+      ]
+    }
+  },
+  {
+    "name": "冬季冷启动(单主驾老人)",
+    "scene": {
+      "cabin": {"ambient_temp": -3, "cabin_temp": -1, "weather": "cloudy", "humidity": 60, "sun_driver_wm2": 150, "sun_passenger_wm2": 150, "soc": 50, "speed": 0, "season": "winter", "timestamp": 1700000000.0},
+      "occupants": [
+        {"seat_id": "driver", "user_id": "grandpa", "age": 70, "gender": "male", "height_cm": 172, "weight_kg": 68, "clothing": "heavy", "emotion": "neutral", "activity": "calm"}
+      ]
+    }
+  },
+  {
+    "name": "雨天高湿起雾(自动叠加除霜)",
+    "scene": {
+      "cabin": {"ambient_temp": 4, "cabin_temp": 11, "weather": "rain", "humidity": 92, "rain_level": "moderate", "windshield_air_temp": 11, "windshield_glass_temp": 5, "sun_driver_wm2": 80, "sun_passenger_wm2": 80, "soc": 65, "speed": 40, "season": "winter", "timestamp": 1700000000.0},
+      "occupants": [
+        {"seat_id": "driver", "user_id": "alice", "age": 38, "gender": "female", "height_cm": 165, "weight_kg": 58, "clothing": "medium", "emotion": "neutral", "activity": "calm"}
+      ]
+    }
+  },
+  {
+    "name": "过渡季低电量+后排睡眠(节能/安静)",
+    "scene": {
+      "cabin": {"ambient_temp": 22, "cabin_temp": 26, "weather": "cloudy", "humidity": 50, "sun_driver_wm2": 450, "sun_passenger_wm2": 450, "soc": 18, "speed": 60, "season": "transition", "windows_open": {"rear_right": 30}, "timestamp": 1700000000.0},
+      "occupants": [
+        {"seat_id": "driver", "user_id": "alice", "age": 38, "gender": "female", "height_cm": 165, "weight_kg": 58, "clothing": "medium", "emotion": "neutral", "activity": "calm"},
+        {"seat_id": "rear_right", "user_id": "kid", "age": 4, "gender": "female", "height_cm": 105, "weight_kg": 17, "clothing": "light", "emotion": "neutral", "activity": "sleeping"}
+      ]
+    }
+  },
+  {
+    "name": "夏季开门开窗换气(制冷效果下降/烦躁)",
+    "scene": {
+      "cabin": {"ambient_temp": 34, "cabin_temp": 36, "weather": "sunny", "humidity": 60, "sun_driver_wm2": 1000, "sun_passenger_wm2": 900, "soc": 70, "speed": 0, "season": "summer", "doors_open": {"driver": true}, "windows_open": {"driver": 100, "front_passenger": 50}, "timestamp": 1700000000.0},
+      "occupants": [
+        {"seat_id": "driver", "user_id": "alice", "age": 38, "gender": "female", "height_cm": 165, "weight_kg": 58, "clothing": "light", "emotion": "angry", "activity": "excited"},
+        {"seat_id": "front_passenger", "user_id": "grandpa", "age": 72, "gender": "male", "height_cm": 170, "weight_kg": 66, "clothing": "medium", "emotion": "worried", "activity": "calm"}
+      ]
+    }
+  },
+  {
+    "name": "长途夜间(副驾睡眠老人/后排小孩)",
+    "scene": {
+      "cabin": {"ambient_temp": 12, "cabin_temp": 16, "weather": "cloudy", "humidity": 55, "sun_driver_wm2": 0, "sun_passenger_wm2": 0, "soc": 55, "speed": 90, "season": "transition", "timestamp": 1700000000.0},
+      "occupants": [
+        {"seat_id": "driver", "user_id": "alice", "age": 38, "gender": "female", "height_cm": 165, "weight_kg": 58, "clothing": "medium", "emotion": "neutral", "activity": "calm"},
+        {"seat_id": "front_passenger", "user_id": "grandma", "age": 68, "gender": "female", "height_cm": 158, "weight_kg": 70, "clothing": "heavy", "emotion": "happy", "activity": "sleeping"},
+        {"seat_id": "rear_left", "user_id": "kid", "age": 8, "gender": "male", "height_cm": 128, "weight_kg": 28, "clothing": "medium", "emotion": "joy", "activity": "sleeping"}
+      ]
+    }
+  }
+]

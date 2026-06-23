@@ -1,0 +1,13 @@
+# 座舱智慧空调 Agent PoC 依赖(Python 3.14 验证)
+
+langgraph>=0.2
+langchain-core>=0.3
+langchain-openai>=0.2        # DeepSeek 走 OpenAI 兼容接口
+pydantic>=2.7
+numpy>=1.26
+scikit-learn>=1.5           # 知识检索 TF-IDF 向量化
+chromadb>=1.5               # 知识向量数据库
+typer>=0.12
+rich>=13
+streamlit>=1.36
+python-dotenv>=1.0

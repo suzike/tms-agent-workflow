@@ -1,0 +1,42 @@
+[
+  {
+    "name": "夏季暴晒高温",
+    "scene": {
+      "cabin": {"ambient_temp": 38, "cabin_temp": 50, "weather": "sunny", "humidity": 50, "sun_driver_wm2": 1450, "sun_passenger_wm2": 1200, "soc": 70, "speed": 0, "season": "summer", "timestamp": 1700000000.0},
+      "occupants": [{"seat_id": "driver", "user_id": "u", "age": 35, "gender": "male", "clothing": "light", "activity": "calm"}]
+    },
+    "expect": {"seat_id": "driver", "air_mode": "face", "temp_below": 27}
+  },
+  {
+    "name": "冬季冷启动",
+    "scene": {
+      "cabin": {"ambient_temp": -5, "cabin_temp": -2, "weather": "cloudy", "humidity": 55, "sun_driver_wm2": 120, "sun_passenger_wm2": 120, "soc": 60, "speed": 0, "season": "winter", "timestamp": 1700000000.0},
+      "occupants": [{"seat_id": "driver", "user_id": "u", "age": 35, "gender": "male", "clothing": "heavy", "activity": "calm"}]
+    },
+    "expect": {"seat_id": "driver", "air_mode": "feet", "temp_above": 20}
+  },
+  {
+    "name": "雨天高湿起雾(自动叠加除霜)",
+    "scene": {
+      "cabin": {"ambient_temp": 3, "cabin_temp": 10, "weather": "rain", "humidity": 93, "rain_level": "moderate", "windshield_air_temp": 10, "windshield_glass_temp": 4, "sun_driver_wm2": 80, "sun_passenger_wm2": 80, "soc": 65, "speed": 30, "season": "winter", "timestamp": 1700000000.0},
+      "occupants": [{"seat_id": "driver", "user_id": "u", "age": 35, "gender": "male", "clothing": "medium", "activity": "calm"}]
+    },
+    "expect": {"seat_id": "driver", "air_mode": "feet_defrost"}
+  },
+  {
+    "name": "最大除霜功能开启(纯除霜)",
+    "scene": {
+      "cabin": {"ambient_temp": 1, "cabin_temp": 2, "weather": "snow", "humidity": 90, "sun_driver_wm2": 0, "sun_passenger_wm2": 0, "soc": 60, "speed": 0, "season": "winter", "max_defrost": true, "timestamp": 1700000000.0},
+      "occupants": [{"seat_id": "driver", "user_id": "u", "age": 35, "gender": "male", "clothing": "heavy", "activity": "calm"}]
+    },
+    "expect": {"seat_id": "driver", "air_mode": "defrost", "fan_is": 7}
+  },
+  {
+    "name": "过渡季舒适",
+    "scene": {
+      "cabin": {"ambient_temp": 21, "cabin_temp": 24, "weather": "cloudy", "humidity": 50, "sun_driver_wm2": 300, "sun_passenger_wm2": 300, "soc": 80, "speed": 50, "season": "transition", "timestamp": 1700000000.0},
+      "occupants": [{"seat_id": "driver", "user_id": "u", "age": 35, "gender": "male", "clothing": "medium", "activity": "calm"}]
+    },
+    "expect": {"seat_id": "driver", "temp_between": [20, 28]}
+  }
+]

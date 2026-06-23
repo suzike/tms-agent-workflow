@@ -1,0 +1,14 @@
+# 座舱 HMI 暗色科技主题
+[theme]
+base = "dark"
+primaryColor = "#00E5FF"            # 主青色(冷)
+backgroundColor = "#070B12"          # 近黑底
+secondaryBackgroundColor = "#0E1622" # 面板底
+textColor = "#D7E3EE"
+font = "monospace"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false

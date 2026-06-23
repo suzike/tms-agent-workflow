@@ -1,0 +1,29 @@
+# 虚拟环境(由 setup.bat 本地重建,勿上传)
+.venv/
+venv/
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# 密钥与本地配置(切勿上传)——仅提交 .env.example 模板
+.env
+
+# 运行时生成的记忆(用户本地学习数据)
+data/memory.json
+
+# 开发工具中间产物
+.claude/
+.spec-workflow/
+.playwright-mcp/
+
+# 调试截图/临时文件
+*.png
+*.svg
+_*.svg
+
+# 操作系统
+.DS_Store
+Thumbs.db
