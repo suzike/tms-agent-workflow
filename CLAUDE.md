@@ -124,6 +124,9 @@
 .venv/Scripts/python -m streamlit run tms_agent/app_web.py
 ```
 接云端 LLM:复制 `.env.example`→`.env` 填 `DEEPSEEK_API_KEY`。
+双击脚本:`setup.bat`(装依赖)/ `run_web.bat`(启动 Web)/ `run_cli.bat`(启动 CLI 终端)。
+**CLI 与 Web 同引擎、功能对齐**:`infer`(含除雾决策)/`chain`(多 Agent 推理链)/`say`(语音指令)/
+`correct`(手动修正)/`teach`(学习闭环)/`memory`(记忆链条)/`reset`;PMV 标尺/曲线为 Web 专属可视化。
 
 ## 非目标(本期不做,已用接口隔离)
 

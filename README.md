@@ -159,8 +159,9 @@ flowchart TD
 1. 安装 [Python 3.11+](https://www.python.org/downloads/),安装时务必勾选 **Add Python to PATH**。
 2. 双击 **`setup.bat`** —— 自动创建虚拟环境 `.venv` 并安装全部依赖(首次约几分钟)。
 3. 双击 **`run_web.bat`** —— 启动座舱 Web 界面,浏览器访问 **http://127.0.0.1:8501**。
+4. 想用命令行?双击 **`run_cli.bat`** —— 打开已就绪的 CLI 终端,输入 `tms infer 0` 等命令。
 
-> 💡 无需任何云端 Key 即可**离线运行**(内置规则引擎兜底)。
+> 💡 无需任何云端 Key 即可**离线运行**(内置规则引擎兜底)。CLI 与 Web **同一套引擎、功能对齐**。
 
 ### 手动命令(可选)
 
@@ -169,7 +170,14 @@ python -m venv .venv
 .venv/Scripts/python -m pip install -r requirements.txt   # 已在 Python 3.14 验证
 .venv/Scripts/python -m pytest -q                          # 97 项测试
 .venv/Scripts/python -m streamlit run tms_agent/app_web.py # Web HMI
-.venv/Scripts/python -m tms_agent.app_cli teach 0          # CLI 闭环演示
+# CLI(与 Web 功能对齐):
+.venv/Scripts/python -m tms_agent.app_cli list             # 列出场景
+.venv/Scripts/python -m tms_agent.app_cli infer 0          # 推理(含除雾 Agent 决策)
+.venv/Scripts/python -m tms_agent.app_cli chain 0          # 多 Agent 实时推理链
+.venv/Scripts/python -m tms_agent.app_cli say 0 driver 太冷了   # 语音/对话指令
+.venv/Scripts/python -m tms_agent.app_cli correct 0 driver 19 6 face_feet  # 手动修正
+.venv/Scripts/python -m tms_agent.app_cli teach 0          # 学习闭环演示
+.venv/Scripts/python -m tms_agent.app_cli memory           # 查看学习记忆链条
 ```
 
 ---
@@ -211,7 +219,7 @@ tms_agent/
   app_web.py / app_cli.py   Streamlit 座舱 HMI / Typer CLI
 data/   mock_scenes.json 演示场景 · scenario_set.json 回归工况(memory.json 运行时生成)
 docs/img/   README 配图
-setup.bat / run_web.bat   双击安装 / 启动
+setup.bat / run_web.bat / run_cli.bat   双击:安装 / 启动 Web / 启动 CLI 终端
 ```
 
 ---
