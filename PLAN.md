@@ -46,6 +46,14 @@ PMV/PPD/EQT 为基于上述输入的模型值,UI/CLI 展示估算项与计算过
 - 接入:`engine.defog_for(cabin)` 按车厢指纹缓存,注入各座位图 `state['defog']`;
   strong 级叠加时保证风量 ≥ `DEFOG.fan_floor_strong`(=4)。
 
+## 4b. 瞬态控制(负荷 → 稳态)
+
+`tools/thermal_comfort.transient_setpoint_fan(cabin_temp, target)`:车内离目标越远(负荷越大)
+→ 设定越激进(制冷更低/制热更高)+ 风量越大,加快收敛;趋近 → 设定回归目标 + 降风量;
+稳态 → 最舒适目标 + 低档(常规 **2~3 档**,`fan_steady_min=2`;个性化可学到 1 档)。
+comfort 节点算出 `transient` 注入 payload `transient_recommendation`,LLM 提示词**强制同向遵循**,
+MockDecider 直接采用,口径统一。
+
 ## 5. 逐步逼近(游标式 + LLM 实时推理 + 确定性兜底)
 
 - 一次修正建立偏好(写入 user×seat 记忆),并重置逼近游标、进入冷静期。
@@ -67,9 +75,13 @@ PMV/PPD/EQT 为基于上述输入的模型值,UI/CLI 展示估算项与计算过
  → 智能除雾 Agent(车厢级,每场景判定一次,sense→knowledge→decide)结论注入各座位 state
  → 防抖/冷静期决定生效;DecisionTrace 留痕
 用户覆盖/语音 → apply_correction / apply_command:写记忆 + 锁定 + 重置游标
-实时推理链:engine.stream_seat(apply=False) 复用缓存,逐节点流式展示(含计算过程)
+实时推理链:engine.infer(capture_chain=True) 一次推理同时产出"生效设定"与"推理链步骤",
+            总览与推理链数值完全一致(逐节点含计算过程);stream_seat 保留供单座位流式/测试
 降级链:云LLM(超时)→ MockDecider → 沿用上次+舒适锚点
 ```
+
+> **一致性要点**:总览卡片与推理链来自**同一次 infer**;LLM payload **不含 seat_id**(热舒适与座位无关),
+> 相同物理输入 → 相同结果。左右差异只来自实际不同输入(按座位日照、各自记忆)。
 
 ## 7. 预装能力清单(knowledge / tool / skill)
 
@@ -94,6 +106,16 @@ PMV/PPD/EQT 为基于上述输入的模型值,UI/CLI 展示估算项与计算过
 
 ## 更新记录
 
+- **GitHub 公开仓库**:https://github.com/suzike/tms-agent-workflow;根目录 `setup.bat`(双击装依赖)、
+  `run_web.bat`(双击启动);`.gitignore` 排除 `.env/.venv/记忆`,仅 `.env.example` 入库。
+- **总览↔推理链同源 + 主副驾一致(修复)**:`engine.infer(capture_chain=True)` 一次推理同时产出
+  生效设定与推理链步骤,Web 两处数值完全一致;LLM payload 去掉 `seat_id`,相同物理输入 → 相同结果。
+- **瞬态控制接入 LLM**:`transient_setpoint_fan` 设定/风量随负荷回调,注入 payload 并由提示词强制遵循;
+  稳态风量落脚 2~3 档(`fan_steady_min=2`,个性化可学到 1 档)。
+- **完整记忆链条**:`CorrectionRecord` 存 人员/车辆/环境 完整快照 → 推理 → 用户修正;语音与手动调节都写入。
+- **PMV 可视化模块 + HUD 渲染修复**:座舱图下方 PMV 逻辑/标尺/变化曲线;富 SVG 改用
+  `st.components.v1.html`(iframe)渲染避免 Markdown 截断;座椅按内温着色 + 动态气流;冷静期倒计时。
+- **知识必依据**:LLM 提示词强制以注入的 knowledge 规则为权威依据。
 - **多 Agent:智能除雾 Agent 独立**(`defog/`)——起雾判定从 safety 拆出为车厢级独立 LangGraph,
   新增 `rain_level` 雨量输入与 `DefogDecision`;前馈+反馈判定,安全取严,舒适侧叠加除霜。
 - 学习策略:渐进置信 → 持续逼近 → **游标式逐步逼近**(按推理次数迭代,7→5→4→3);防抖放宽避免吃步。

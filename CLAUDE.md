@@ -105,9 +105,16 @@
 1. **Python 3.14 环境**。scikit-learn / chromadb 已验证可安装并启用:知识检索用
    sklearn ``TfidfVectorizer`` 向量化 + chromadb 向量库(见 `knowledge/retriever.py`)。
 2. `now` 必须贯穿 `engine.infer → graph state['now'] → recall → store.recall`,否则时间衰减口径错乱。
-3. 所有阈值集中在 `config.py` 的 `Thresholds`,调参改这里,勿散落。
+3. 所有阈值集中在 `config.py` 的 `Thresholds`/`DefogThresholds`/`ComfortDefaults`,调参改这里,勿散落。
 4. 不可变风格:节点返回 state 增量,记忆记录只增不改。
 5. 代码注释用中文,与现有代码库一致。
+6. **LLM payload 不含 `seat_id`**:热舒适只取决于物理输入,与座位无关;否则主/副驾同输入也会被当成
+   不同请求(且 LLM 温度>0 非确定)→ 同输入异输出。见 `graph/nodes._build_payload`。
+7. **总览与推理链必须同源**:Web 用 `engine.infer(capture_chain=True)` 一次推理同时喂两处,
+   勿分别推理(`infer` 有 `last_applied`/游标副作用,二次推理会导致温度不一致)。
+8. **Web 富 SVG 用 `st.components.v1.html`(iframe)渲染**,勿用 `st.markdown`——多行 SVG 会被
+   Markdown 段落化截断(座椅/文字被丢弃),且滤镜/渐变/动画需 iframe 内联样式。诊断用 Playwright
+   `iframe.contentDocument` 查 svg 子元素数。
 
 ## 运行与验证
 

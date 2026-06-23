@@ -69,6 +69,9 @@ description: >-
 - 阈值集中在 `config.py`(`Thresholds` + `DefogThresholds`);不可变风格(节点返回 state 增量);注释用中文。
 - 中文引号在 JSON/Python 字符串内必须用「」,误用 ASCII " 会破坏 JSON/语法。
 - 舒适图序列:featurize→recall→comfort→llm_infer→approach→safety;除雾图序列:sense→knowledge→decide。
+- **LLM payload 不含 seat_id**(热舒适与座位无关,否则同输入异输出);**总览与推理链用同一次
+  `infer(capture_chain=True)`**(勿分别推理,避免 last_applied/游标副作用致不一致)。
+- **Web 富 SVG 用 `st.components.v1.html`(iframe)渲染**,勿用 `st.markdown`(会被 Markdown 段落化截断)。
 
 ## 6. 运行与验证
 
