@@ -106,7 +106,7 @@ MockDecider 直接采用,口径统一。
 
 ## 更新记录
 
-- **GitHub 公开仓库**:https://github.com/suzike/tms-agent-workflow;双击脚本 `setup.bat`(装依赖)/
+- **GitHub 公开仓库**:https://github.com/suzike/Vehicle-Thermal-LLM-MultiAgent;双击脚本 `setup.bat`(装依赖)/
   `run_web.bat`(启 Web)/ `run_cli.bat`(启 CLI 终端,`tms` 快捷命令);`.gitignore` 排除
   `.env/.venv/记忆`,仅 `.env.example` 入库;**`.gitattributes` 强制 `.bat` 以 CRLF 检出**(修复
   Windows 双击一闪而退)。CLI 与 Web **同引擎、功能对齐**(infer/chain/say/correct/teach/memory/reset)。
